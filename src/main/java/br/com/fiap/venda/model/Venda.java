@@ -24,7 +24,7 @@ public class Venda {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
-            name = "ID_CARRINHI",
+            name = "ID_CARRINHO",
             referencedColumnName = "ID_CARRINHO",
             foreignKey = @ForeignKey(
                     name = "FK_VENDA_CARRINHO",

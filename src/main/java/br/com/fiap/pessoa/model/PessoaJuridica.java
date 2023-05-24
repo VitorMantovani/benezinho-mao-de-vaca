@@ -14,6 +14,7 @@ import java.util.Set;
                 @UniqueConstraint(name = "UK_NUM_CNPJ", columnNames = "NUM_CNPJ"),
         }
 )
+@DiscriminatorValue("PJ")
 public class PessoaJuridica extends Pessoa {
     @Column(name = "NUM_CNPJ")
     private String CNPJ;

@@ -10,6 +10,7 @@ import java.util.Objects;
         name = "TB_PESSOA"
 )
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "TP_PESSOA")
 public abstract class Pessoa {
 
     @Id
