@@ -8,14 +8,22 @@ import br.com.fiap.pessoa.model.PessoaFisica;
 import br.com.fiap.pessoa.model.Sexo;
 import br.com.fiap.produto.model.ProdutoPerecivel;
 import br.com.fiap.venda.model.Venda;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("oracle");
+        EntityManager entityManager = factory.createEntityManager();
 
         PessoaFisica chicoBento = new PessoaFisica();
         chicoBento.setSexo(Sexo.MASCULINO)
@@ -65,9 +73,42 @@ public class Main {
 
         venda.setValor(carrinho.getValorTotal());
 
+        entityManager.getTransaction().begin();
+
+        entityManager.persist(chicoBento);
+        entityManager.persist(fazendeiro);
+        entityManager.persist(alface);
+        entityManager.persist(brocolis);
+        entityManager.persist(estoque);
+        entityManager.persist(ricardo);
+        entityManager.persist(vip);
+        entityManager.persist(carrinho);
+        entityManager.persist(venda);
+
+        entityManager.getTransaction().commit();
+
+        String id = "1";
+        Venda vendaConsultada = consultarVenda(entityManager, id);
+        System.out.println("Processo consultado: " + vendaConsultada);
+
+        List<Venda> vendas = consultarTodasVendas(entityManager);
+        System.out.println("Processos consultados: " + vendas);
+
 
         System.out.println(venda);
 
+        entityManager.close();
+
+    }
+
+    public static Venda consultarVenda(EntityManager entityManager, String id) {
+        return entityManager.find(Venda.class, id);
+    }
+
+    public static List<Venda> consultarTodasVendas(EntityManager entityManager) {
+        String jpql = "SELECT v FROM Venda v";
+        TypedQuery<Venda> query = entityManager.createQuery(jpql, Venda.class);
+        return query.getResultList();
     }
 
     private static String getCpf() {

@@ -1,11 +1,34 @@
 package br.com.fiap.cliente.model;
 
 import br.com.fiap.pessoa.model.Pessoa;
+import jakarta.persistence.*;
 
+@Entity
+@Table(
+        name = "TB_CLIENTE"
+)
 public class Cliente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_CLIENTE")
+    @SequenceGenerator(
+            name = "SQ_CLIENTE",
+            sequenceName = "SQ_CLIENTE",
+            initialValue = 1,
+            allocationSize = 1
+    )
+    @Column(name = "ID_CLIENTE")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(
+            name = "ID_PESSOA",
+            referencedColumnName = "ID_PESSOA",
+            foreignKey = @ForeignKey(
+                    name = "FK_CLIENTE_PESSOA",
+                    value = ConstraintMode.CONSTRAINT
+            )
+    )
     private Pessoa pessoa;
 
     public Cliente() {
